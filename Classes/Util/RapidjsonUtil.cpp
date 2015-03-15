@@ -6,7 +6,7 @@
 //
 //
 
-#include "Utils/RapidjsonUtil.h"
+#include "RapidjsonUtil.h"
 
 namespace
 {

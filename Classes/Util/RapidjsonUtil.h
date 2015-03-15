@@ -10,9 +10,9 @@
 #define __RAPIDJSON_UTIL_H__
 
 #include <iostream>
-#include "ThirdParty/rapidjson/document.h"
-#include "ThirdParty/rapidjson/stringbuffer.h"
-#include "ThirdParty/rapidjson/writer.h"
+#include "document.h"
+#include "stringbuffer.h"
+#include "writer.h"
 
 // rapidjsonに関するユーティリティ
 namespace RapidjsonUtil

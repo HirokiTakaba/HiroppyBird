@@ -18,6 +18,8 @@ USING_NS_CC;
 #define GRAVITY 9.8 // 重力
 #define POSITION_RATE 70 // ゲーム倍率
 
+const std::string GameLayer::HOST = "ws://socket-dev.brainwarsapp.com:465";
+
 // シーン生成
 Scene* GameLayer::createScene()
 {
@@ -35,6 +37,9 @@ bool GameLayer::init()
     {
         return false;
     }
+    
+    // ステータスを変更
+    _state = State::GameReady;
     
     // 乱数の初期化
     std::random_device rd;
@@ -55,6 +60,9 @@ bool GameLayer::init()
     listener->onTouchesBegan = CC_CALLBACK_2(GameLayer::onTouchesBegan, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
+    // Socketに接続
+    _client = SocketIO::connect(HOST, *this);
+    
     return true;
 }
 
@@ -74,15 +82,11 @@ void GameLayer::onEnter()
     startButton->setPosition(WINSIZE.width/2, WINSIZE.height/2);
     startButton->setName("start_button");
     this->addChild(startButton);
-    
 }
 
 // update関数（毎フレーム処理）
 void GameLayer::update(float dt)
 {
-    // ゲーム時間の積算
-    _totalTime += dt;
-    
     // ゲームオーバーの判定
     if(_bird->getPositionY() < 0 || _bird->getPositionY() > WINSIZE.height || contactBlock())
     {
@@ -121,6 +125,9 @@ void GameLayer::update(float dt)
     }
     else
     {
+        // ゲーム時間の積算
+        _totalTime += dt;
+        
         // キャラの位置を変更
         float time = _totalTime - _jumpingTime;
         float newY = (JUMP_V0 * time - GRAVITY * time * time / 2) * POSITION_RATE + _jumpPointY;
@@ -158,11 +165,33 @@ void GameLayer::update(float dt)
         }
         
     }
+    
+    if (_bird2 != NULL)
+    {
+        // ゲーム時間の積算
+        _totalTimeBird2 += dt;
+        
+        // キャラ位置の変更
+        float time = _totalTimeBird2 - _jumpingTimeBird2;
+        float newY = (JUMP_V0 * time - GRAVITY * time * time / 2) * POSITION_RATE + _jumpPointYBird2;
+        _bird2->setPositionY(newY);
+    }
+    
 }
 
 // スタートボタンがタップされた時
 void GameLayer::onTouchesBegan(const std::vector<Touch*>& touches, Event *event)
 {
+    if (_state == State::GameReady)
+    {
+        // ゲーム準備
+        _client->on("subscribe", CC_CALLBACK_2(GameLayer::onSubscribeEvent, this));
+        _client->on("battle", CC_CALLBACK_2(GameLayer::onBattleEvent, this));
+        
+        // ステータスを変更
+        _state = State::GameStart;
+    }
+    
     if (_state == State::GameStart)
     {
         // スタート画面フレームアウト
@@ -178,6 +207,9 @@ void GameLayer::onTouchesBegan(const std::vector<Touch*>& touches, Event *event)
         
         // キャラクターの位置を保持
         _jumpPointY = _bird->getPositionY();
+        
+        //
+        _client->emit("subscribe", "{\"battle_code\":\"hiroppy\"}");
         
         // update関数を毎フレーム呼び出す
         scheduleUpdate();
@@ -195,7 +227,26 @@ void GameLayer::onTouchesBegan(const std::vector<Touch*>& touches, Event *event)
         auto jumpDown = RotateTo::create(0.9, 75);
         auto seq = Sequence::create(jumpUp, jumpDown, nullptr);
         _bird->runAction(seq);
+        
+        // ソケットに通知
+        rapidjson::StringBuffer strbuf;
+        jsonWriter writer(strbuf);
+        writer.StartObject();
+        writer.String("battle_code");
+        writer.String("hiroppy");
+        writer.String("data");
+        writer.StartObject();
+        writer.String("jumping_point_y");
+        writer.Int(_jumpPointY);
+        writer.String("jumping_time");
+        writer.Int(_jumpingTime);
+        writer.String("total_time");
+        writer.Int(_totalTime);
+        writer.EndObject();
+        writer.EndObject();
+        _client->emit("battle", strbuf.GetString());
     }
+    
 }
 
 
@@ -232,7 +283,7 @@ bool GameLayer::contactBlock()
 // 戻るボタンタップイベント
 void GameLayer::backCallback(cocos2d::Ref* sender)
 {
-    CCLOG("back");
+    CCLOG("backbutton taped");
     
     // 全ブロックを削除する
     while (true)
@@ -262,4 +313,62 @@ void GameLayer::backCallback(cocos2d::Ref* sender)
     
     // ステータスの変更
     _state = State::GameStart;
+}
+
+
+void GameLayer::onConnect(SIOClient* client){
+    CCLOG("onConnect");
+}
+
+void GameLayer::onMessage(SIOClient* client, const std::string& data){
+    CCLOG("message: %s", data.c_str());
+}
+
+void GameLayer::onClose(SIOClient* client){
+    // SocketIO::disconnect success
+}
+
+void GameLayer::onError(SIOClient* client, const std::string& data){
+    // SocketIO::failed
+}
+
+void GameLayer::onSubscribeEvent(SIOClient* client, const std::string& data)
+{
+    CCLOG("event subscribe");
+}
+
+void GameLayer::onBattleEvent(SIOClient* client, const std::string& data)
+{
+    CCLOG("event battle");
+
+    rapidjson::Document json;
+    json.Parse<0>(data.c_str());
+    const rapidjson::Value& bjson = json["args"][rapidjson::SizeType(0)];
+    
+    // 敵のジャンプ情報
+    _jumpingTimeBird2 = RapidjsonUtil::getIntValue(bjson, "jumping_time");
+    _jumpPointYBird2 = RapidjsonUtil::getIntValue(bjson, "jumping_point_y");
+    _totalTimeBird2 = RapidjsonUtil::getIntValue(bjson, "total_time");
+    
+    // ジャンプ情報がなければ返す
+    if(_jumpPointYBird2 == 0)
+    {
+        return;
+    }
+    
+    if(_bird2 == NULL)
+    {
+        // 敵のキャラクター追加
+        _bird2 = Sprite::create("bird/penguin_1.png");
+        _bird2->setPosition(WINSIZE.width/2 *0.6 - 50, WINSIZE.height/2);
+        _bird2->setColor(cocos2d::Color3B::RED);
+        this->addChild(_bird2);
+    }
+    
+    // ジャンプアニメーションを行う
+    auto jumpUp = RotateTo::create(0.3, -75);
+    auto jumpDown = RotateTo::create(0.9, 75);
+    auto seq = Sequence::create(jumpUp, jumpDown, nullptr);
+    _bird2->runAction(seq);
+    
 }

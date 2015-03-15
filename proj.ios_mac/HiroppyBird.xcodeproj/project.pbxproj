@@ -65,6 +65,8 @@
 		6B7C22FD1AAAD81000D88ABD /* ui in Resources */ = {isa = PBXBuildFile; fileRef = 6B7C22FB1AAAD81000D88ABD /* ui */; };
 		6B7C22FF1AAAEBCA00D88ABD /* bird in Resources */ = {isa = PBXBuildFile; fileRef = 6B7C22FE1AAAEBCA00D88ABD /* bird */; };
 		6B7C23001AAAEBCA00D88ABD /* bird in Resources */ = {isa = PBXBuildFile; fileRef = 6B7C22FE1AAAEBCA00D88ABD /* bird */; };
+		6B93D5241AAE0123000F6F64 /* RapidjsonUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B93D5221AAE0123000F6F64 /* RapidjsonUtil.cpp */; };
+		6B93D5251AAE0123000F6F64 /* RapidjsonUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B93D5221AAE0123000F6F64 /* RapidjsonUtil.cpp */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -160,6 +162,18 @@
 		6B4056C21AA896770088FD3C /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLayer.h; sourceTree = "<group>"; };
 		6B7C22FB1AAAD81000D88ABD /* ui */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ui; sourceTree = "<group>"; };
 		6B7C22FE1AAAEBCA00D88ABD /* bird */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bird; sourceTree = "<group>"; };
+		6B93D5161AAE0123000F6F64 /* document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = document.h; sourceTree = "<group>"; };
+		6B93D5171AAE0123000F6F64 /* filestream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filestream.h; sourceTree = "<group>"; };
+		6B93D5191AAE0123000F6F64 /* pow10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pow10.h; sourceTree = "<group>"; };
+		6B93D51A1AAE0123000F6F64 /* stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack.h; sourceTree = "<group>"; };
+		6B93D51B1AAE0123000F6F64 /* strfunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strfunc.h; sourceTree = "<group>"; };
+		6B93D51C1AAE0123000F6F64 /* prettywriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prettywriter.h; sourceTree = "<group>"; };
+		6B93D51D1AAE0123000F6F64 /* rapidjson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rapidjson.h; sourceTree = "<group>"; };
+		6B93D51E1AAE0123000F6F64 /* reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
+		6B93D51F1AAE0123000F6F64 /* stringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringbuffer.h; sourceTree = "<group>"; };
+		6B93D5201AAE0123000F6F64 /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = writer.h; sourceTree = "<group>"; };
+		6B93D5221AAE0123000F6F64 /* RapidjsonUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidjsonUtil.cpp; sourceTree = "<group>"; };
+		6B93D5231AAE0123000F6F64 /* RapidjsonUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidjsonUtil.h; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -297,6 +311,8 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				6B93D5141AAE0123000F6F64 /* ThirdParty */,
+				6B93D5211AAE0123000F6F64 /* Utils */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
 				46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */,
@@ -355,6 +371,49 @@
 			path = ios;
 			sourceTree = SOURCE_ROOT;
 		};
+		6B93D5141AAE0123000F6F64 /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				6B93D5151AAE0123000F6F64 /* rapidjson */,
+			);
+			path = ThirdParty;
+			sourceTree = "<group>";
+		};
+		6B93D5151AAE0123000F6F64 /* rapidjson */ = {
+			isa = PBXGroup;
+			children = (
+				6B93D5161AAE0123000F6F64 /* document.h */,
+				6B93D5171AAE0123000F6F64 /* filestream.h */,
+				6B93D5181AAE0123000F6F64 /* internal */,
+				6B93D51C1AAE0123000F6F64 /* prettywriter.h */,
+				6B93D51D1AAE0123000F6F64 /* rapidjson.h */,
+				6B93D51E1AAE0123000F6F64 /* reader.h */,
+				6B93D51F1AAE0123000F6F64 /* stringbuffer.h */,
+				6B93D5201AAE0123000F6F64 /* writer.h */,
+			);
+			path = rapidjson;
+			sourceTree = "<group>";
+		};
+		6B93D5181AAE0123000F6F64 /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				6B93D5191AAE0123000F6F64 /* pow10.h */,
+				6B93D51A1AAE0123000F6F64 /* stack.h */,
+				6B93D51B1AAE0123000F6F64 /* strfunc.h */,
+			);
+			path = internal;
+			sourceTree = "<group>";
+		};
+		6B93D5211AAE0123000F6F64 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6B93D5221AAE0123000F6F64 /* RapidjsonUtil.cpp */,
+				6B93D5231AAE0123000F6F64 /* RapidjsonUtil.h */,
+			);
+			name = Utils;
+			path = Util;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -403,7 +462,7 @@
 				LastUpgradeCheck = 0500;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
-						DevelopmentTeam = MDDB52YB8L;
+						DevelopmentTeam = 389ERL62N4;
 					};
 				};
 			};
@@ -509,6 +568,7 @@
 				46880B8A19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
+				6B93D5241AAE0123000F6F64 /* RapidjsonUtil.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				6B4056C31AA896770088FD3C /* GameLayer.cpp in Sources */,
 			);
@@ -518,6 +578,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B93D5251AAE0123000F6F64 /* RapidjsonUtil.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				6B4056C41AA896770088FD3C /* GameLayer.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
